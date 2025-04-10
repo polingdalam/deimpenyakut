@@ -88,8 +88,8 @@ export default function LogEntryForm({
         data = {
           type: "meal",
           mealType,
-          carbCount,
-          foodItems,
+          carbCount: carbCount || "0", // Ensure carbCount is never undefined or empty
+          foodItems: foodItems || [], // Ensure foodItems is never undefined
           timestamp: new Date(),
         };
         break;

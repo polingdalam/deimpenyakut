@@ -1,8 +1,4 @@
-import {
-  DefaultTheme,
-  ThemeProvider,
-  NavigationContainer,
-} from "@react-navigation/native";
+import { DefaultTheme } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
@@ -38,7 +34,7 @@ export default function RootLayout() {
   }
 
   return (
-    <NavigationContainer theme={DefaultTheme}>
+    <>
       <Stack
         screenOptions={({ route }) => ({
           headerShown: !route.name.startsWith("tempobook"),
@@ -48,6 +44,6 @@ export default function RootLayout() {
         <Stack.Screen name="settings" options={{ title: "Settings" }} />
       </Stack>
       <StatusBar style="auto" />
-    </NavigationContainer>
+    </>
   );
 }
