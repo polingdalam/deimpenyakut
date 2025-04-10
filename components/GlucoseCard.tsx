@@ -23,7 +23,7 @@ const GlucoseCard = ({
   unit = "mg/dL",
   timestamp = "Today, 10:30 AM",
   trend = "stable",
-  onLogReading = () => {},
+  onLogReading,
   onViewHistory = () => {},
 }: GlucoseCardProps) => {
   // Determine if glucose is in normal range (70-180 mg/dL is common target range)

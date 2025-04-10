@@ -1,14 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
   TextInput,
   TouchableOpacity,
   ScrollView,
+  Platform,
 } from "react-native";
-import Slider from "@react-native-community/slider";
 import { ChevronDown, Check, X } from "lucide-react-native";
 import * as Haptics from "expo-haptics";
+
+// Dynamic import for Slider to avoid SSR issues
+let Slider: any = () => null;
+if (Platform.OS !== "web" || typeof window !== "undefined") {
+  Slider = require("@react-native-community/slider").default;
+}
 
 type EntryType = "glucose" | "medication" | "meal";
 type MealType = "breakfast" | "lunch" | "dinner" | "snack";
@@ -16,14 +22,14 @@ type MealType = "breakfast" | "lunch" | "dinner" | "snack";
 interface LogEntryFormProps {
   type?: EntryType;
   onSave?: (data: any) => void;
-  onCancel?: () => void;
+  onClose?: () => void;
   isVisible?: boolean;
 }
 
 export default function LogEntryForm({
   type = "glucose",
   onSave = () => {},
-  onCancel = () => {},
+  onClose = () => {},
   isVisible = true,
 }: LogEntryFormProps) {
   const [entryType, setEntryType] = useState<EntryType>(type);
@@ -151,18 +157,20 @@ export default function LogEntryForm({
               <Text className="text-lg font-normal text-gray-500">mg/dL</Text>
             </Text>
 
-            <Slider
-              value={glucoseValue}
-              minimumValue={40}
-              maximumValue={400}
-              step={1}
-              onValueChange={handleSliderChange}
-              onSlidingComplete={handleSliderComplete}
-              minimumTrackTintColor="#3b82f6"
-              maximumTrackTintColor="#e5e7eb"
-              thumbTintColor="#3b82f6"
-              className="my-4"
-            />
+            {Platform.OS !== "web" || typeof window !== "undefined" ? (
+              <Slider
+                value={glucoseValue}
+                minimumValue={40}
+                maximumValue={400}
+                step={1}
+                onValueChange={handleSliderChange}
+                onSlidingComplete={handleSliderComplete}
+                minimumTrackTintColor="#3b82f6"
+                maximumTrackTintColor="#e5e7eb"
+                thumbTintColor="#3b82f6"
+                className="my-4"
+              />
+            ) : null}
 
             <View className="flex-row justify-between mb-4">
               <Text className="text-gray-500">40</Text>
@@ -315,7 +323,7 @@ export default function LogEntryForm({
           className="flex-1 bg-gray-100 py-3 rounded-lg mr-2"
           onPress={() => {
             Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-            onCancel();
+            onClose();
           }}
         >
           <Text className="text-gray-600 font-medium text-center">Cancel</Text>

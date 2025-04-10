@@ -173,7 +173,10 @@ export default function HomeScreen() {
           contentContainerStyle={{ paddingBottom: 30 }}
         >
           {/* Glucose Card */}
-          <GlucoseCard onLogPress={() => handleLogEntry("glucose")} />
+          <GlucoseCard
+            onLogReading={() => handleLogEntry("glucose")}
+            onViewHistory={() => {}}
+          />
 
           {/* Trend Chart */}
           <TrendChart data={glucoseReadings} />
@@ -262,6 +265,7 @@ export default function HomeScreen() {
                 type={logType}
                 onClose={handleCloseForm}
                 onSave={handleSaveEntry}
+                isVisible={true}
               />
             </View>
           </View>
